@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import MasterBookingCard from '@/components/MasterBookingCard';
 import MasterSidebar from '@/components/MasterSidebar';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { hairLabGetMe, hairLabGetMasterBookings, type HairLabBookingWithUser, type HairLabUser } from '@/lib/api';
@@ -78,8 +79,8 @@ export default function MasterBookingsPage() {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <div className="master-stat-card" style={{ padding: '0.75em 1.25em', minWidth: '140px' }}>
-              <span className="master-stat-card__value" style={{ fontSize: '1.5rem' }}>
+            <div className="master-stat-card master-stat-card--compact">
+              <span className="master-stat-card__value master-stat-card__value--compact">
                 {filteredBookings.length}
               </span>
               <span className="master-stat-card__label">записей</span>
@@ -94,46 +95,60 @@ export default function MasterBookingsPage() {
                 {search ? 'Ничего не найдено' : 'Пока нет записей от клиентов'}
               </div>
             ) : (
-              <table className="projects__table">
-                <thead className="projects__table-head">
-                  <tr>
-                    <th>Клиент</th>
-                    <th>Телефон</th>
-                    <th>Услуга</th>
-                    <th>Дата</th>
-                    <th>Время</th>
-                    <th>Комментарий</th>
-                    <th>Статус</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <>
+                <div className="master-table-wrap">
+                  <table className="projects__table">
+                    <thead className="projects__table-head">
+                      <tr>
+                        <th>Клиент</th>
+                        <th>Телефон</th>
+                        <th>Услуга</th>
+                        <th>Дата</th>
+                        <th>Время</th>
+                        <th>Комментарий</th>
+                        <th>Статус</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredBookings.map((booking) => (
+                        <tr key={booking.id}>
+                          <td>
+                            <p className="master-bookings__client-name">
+                              {booking.user.name || '—'}
+                            </p>
+                          </td>
+                          <td>{booking.user.phone}</td>
+                          <td>{getServiceName(booking.service, language)}</td>
+                          <td>{formatBookingDate(booking.date, language)}</td>
+                          <td>{booking.time}</td>
+                          <td>
+                            <p className="master-bookings__comment">
+                              {booking.comment || '—'}
+                            </p>
+                          </td>
+                          <td>
+                            <span
+                              className={`master-bookings__status master-bookings__status--${booking.status}`}
+                            >
+                              {getStatusLabel(booking.status, language)}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="master-bookings-cards">
                   {filteredBookings.map((booking) => (
-                    <tr key={booking.id}>
-                      <td>
-                        <p className="master-bookings__client-name">
-                          {booking.user.name || '—'}
-                        </p>
-                      </td>
-                      <td>{booking.user.phone}</td>
-                      <td>{getServiceName(booking.service, language)}</td>
-                      <td>{formatBookingDate(booking.date, language)}</td>
-                      <td>{booking.time}</td>
-                      <td>
-                        <p className="master-bookings__comment">
-                          {booking.comment || '—'}
-                        </p>
-                      </td>
-                      <td>
-                        <span
-                          className={`master-bookings__status master-bookings__status--${booking.status}`}
-                        >
-                          {getStatusLabel(booking.status, language)}
-                        </span>
-                      </td>
-                    </tr>
+                    <MasterBookingCard
+                      key={booking.id}
+                      booking={booking}
+                      language={language}
+                      showComment
+                    />
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </>
             )}
           </div>
         </div>

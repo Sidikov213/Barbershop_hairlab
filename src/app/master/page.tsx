@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import MasterBookingCard from '@/components/MasterBookingCard';
 import MasterSidebar from '@/components/MasterSidebar';
 import { hairLabGetMe, hairLabGetMasterBookings, type HairLabBookingWithUser, type HairLabUser } from '@/lib/api';
 import './panel.css';
@@ -60,7 +61,7 @@ export default function MasterDashboardPage() {
           </div>
         ) : (
           <>
-            <div className="admin-welcome-content" style={{ marginBottom: '2em' }}>
+            <div className="admin-welcome-content master-welcome-block">
               <h1 className="admin-welcome-title">
                 Здравствуйте, <span className="admin-welcome-name">{displayName}</span>
               </h1>
@@ -84,9 +85,7 @@ export default function MasterDashboardPage() {
 
             <div className="projects__main-container">
               <div className="projects__command-panel">
-                <h2 style={{ margin: 0, color: '#fff', fontSize: '1.5rem', fontWeight: 500 }}>
-                  Ближайшие записи
-                </h2>
+                <h2 className="master-page-title">Ближайшие записи</h2>
                 <Link href="/master/bookings" className="projects__project-add" style={{ textDecoration: 'none' }}>
                   Все записи
                 </Link>
@@ -96,39 +95,48 @@ export default function MasterDashboardPage() {
                 {bookings.length === 0 ? (
                   <div className="master-bookings__empty">Пока нет записей от клиентов</div>
                 ) : (
-                  <table className="projects__table">
-                    <thead className="projects__table-head">
-                      <tr>
-                        <th>Клиент</th>
-                        <th>Услуга</th>
-                        <th>Дата</th>
-                        <th>Время</th>
-                        <th>Статус</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                  <>
+                    <div className="master-table-wrap">
+                      <table className="projects__table">
+                        <thead className="projects__table-head">
+                          <tr>
+                            <th>Клиент</th>
+                            <th>Услуга</th>
+                            <th>Дата</th>
+                            <th>Время</th>
+                            <th>Статус</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {bookings.slice(0, 8).map((booking) => (
+                            <tr key={booking.id}>
+                              <td>
+                                <div className="table-flex">
+                                  <p className="master-bookings__client-name" style={{ margin: 0 }}>
+                                    {booking.user.name || 'Без имени'}
+                                  </p>
+                                  <p className="master-bookings__client-phone">{booking.user.phone}</p>
+                                </div>
+                              </td>
+                              <td>{booking.service}</td>
+                              <td>{booking.date}</td>
+                              <td>{booking.time}</td>
+                              <td>
+                                <span className="master-bookings__status master-bookings__status--confirmed">
+                                  Подтверждено
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="master-bookings-cards">
                       {bookings.slice(0, 8).map((booking) => (
-                        <tr key={booking.id}>
-                          <td>
-                            <div className="table-flex">
-                              <p className="master-bookings__client-name" style={{ margin: 0 }}>
-                                {booking.user.name || 'Без имени'}
-                              </p>
-                              <p className="master-bookings__client-phone">{booking.user.phone}</p>
-                            </div>
-                          </td>
-                          <td>{booking.service}</td>
-                          <td>{booking.date}</td>
-                          <td>{booking.time}</td>
-                          <td>
-                            <span className="master-bookings__status master-bookings__status--confirmed">
-                              Подтверждено
-                            </span>
-                          </td>
-                        </tr>
+                        <MasterBookingCard key={booking.id} booking={booking} />
                       ))}
-                    </tbody>
-                  </table>
+                    </div>
+                  </>
                 )}
               </div>
             </div>

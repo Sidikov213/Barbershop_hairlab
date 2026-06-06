@@ -29,7 +29,8 @@ docker compose exec backend python init_db.py
 
 ```bash
 ssh root@ВАШ_IP
-apt update && apt install -y git docker.io docker-compose-plugin
+apt update && apt install -y git docker.io docker-compose
+systemctl enable --now docker
 
 mkdir -p /var/www
 cd /var/www
@@ -46,20 +47,22 @@ NEXT_PUBLIC_API_BASE_URL=https://api.ваш-домен.ru
 CORS_ORIGINS=https://ваш-домен.ru,https://www.ваш-домен.ru
 ```
 
-Запуск:
+Запуск (на Ubuntu из apt — команда с дефисом):
 
 ```bash
-docker compose up -d --build
-docker compose exec backend python init_db.py
+docker-compose up -d --build
+docker-compose exec backend python init_db.py
 ```
+
+Если установлен Docker Compose v2 (`docker compose` без дефиса), используйте его вместо `docker-compose`.
 
 Настройте nginx + certbot для `ваш-домен.ru` → `:3000` и `api.ваш-домен.ru` → `:8000`.
 
 ## Полезные команды
 
 ```bash
-docker compose logs -f
-docker compose ps
-docker compose restart
-docker compose up -d --build
+docker-compose logs -f
+docker-compose ps
+docker-compose restart
+docker-compose up -d --build
 ```
