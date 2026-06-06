@@ -41,18 +41,15 @@ export default function BookingModal() {
       }
 
       try {
-        const response = await fetch(`http://localhost:8000/api/admin/bookings`);
-        if (response.ok) {
-          const allBookings = await response.json();
-          // Фильтруем бронирования по выбранной дате и статусу "confirmed"
-          const bookedTimesForDate = allBookings
-            .filter((booking: any) => 
-              booking.date === formData.date && 
-              booking.status === 'confirmed'
-            )
-            .map((booking: any) => booking.time);
-          setBookedTimes(bookedTimesForDate);
-        }
+        const { hairLabGetAllBookings } = await import('@/lib/api');
+        const allBookings = await hairLabGetAllBookings();
+        const bookedTimesForDate = allBookings
+          .filter(
+            (booking) =>
+              booking.date === formData.date && booking.status === 'confirmed'
+          )
+          .map((booking) => booking.time);
+        setBookedTimes(bookedTimesForDate);
       } catch (error) {
         console.error('Error loading booked times:', error);
       }

@@ -12,6 +12,7 @@ from schemas import (
     BookingCreate, Booking as BookingSchema, BookingWithUser,
     TimeSlotCheck, TimeSlotResponse
 )
+from config import CORS_ORIGINS, DATABASE_URL
 from auth import (
     verify_code, create_access_token, get_current_active_user,
     ACCESS_TOKEN_EXPIRE_MINUTES, get_current_user
@@ -24,7 +25,6 @@ Base.metadata.create_all(bind=engine)
 def migrate_role_column():
     """Добавляет колонку role в таблицу users, если её нет"""
     import sqlite3
-    from config import DATABASE_URL
     
     # Получаем путь к БД из DATABASE_URL
     if DATABASE_URL.startswith('sqlite:///'):
@@ -65,7 +65,7 @@ app = FastAPI(
 # CORS middleware для фронтенда
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],  # Next.js dev server
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

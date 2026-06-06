@@ -36,3 +36,15 @@ coverage
 
 # Игнорируем документацию
 docs
+
+# Backend (собирается отдельным контейнером)
+backend/venv
+backend/__pycache__
+backend/*.db
+
+# Git
+.git
+.github
+
+# Docker
+docker-compose.yml

@@ -189,6 +189,23 @@ export async function hairLabCheckAvailability(
   return res.json() as Promise<TimeSlotResponse>;
 }
 
+export async function hairLabGetAllBookings(): Promise<HairLabBooking[]> {
+  const res = await fetch(`${API_BASE_URL}/api/admin/bookings`, {
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(
+      `Get all bookings failed ${res.status}: ${res.statusText}${
+        text ? ` – ${text.slice(0, 200)}` : ''
+      }`
+    );
+  }
+
+  return res.json() as Promise<HairLabBooking[]>;
+}
+
 export async function hairLabGetMasterBookings(
   token: string
 ): Promise<HairLabBookingWithUser[]> {

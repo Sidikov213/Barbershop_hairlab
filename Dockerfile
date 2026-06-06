@@ -1,23 +1,34 @@
-# Указываем базовый образ
-FROM node:20
-
-# Устанавливаем рабочую директорию
+FROM node:20-alpine AS deps
 WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# Копируем package.json и package-lock.json (если он есть)
-COPY package*.json ./
-
-# Устанавливаем зависимости
-RUN npm install
-
-# Копируем все файлы проекта в контейнер
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Собираем приложение
+ARG NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+
 RUN npm run build
 
-# Указываем порт, который будет использоваться
-EXPOSE 8080
+FROM node:20-alpine AS runner
+WORKDIR /app
 
-# Команда для запуска приложения
-CMD ["npm", "start"]
+ENV NODE_ENV=production \
+    PORT=3000 \
+    HOSTNAME=0.0.0.0
+
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
