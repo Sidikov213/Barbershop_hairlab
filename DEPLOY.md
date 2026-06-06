@@ -56,7 +56,11 @@ docker-compose exec backend python init_db.py
 
 Если установлен Docker Compose v2 (`docker compose` без дефиса), используйте его вместо `docker-compose`.
 
-Настройте nginx + certbot для `ваш-домен.ru` → `:3000` и `api.ваш-домен.ru` → `:8000`.
+## Домен + HTTPS
+
+Пошаговая инструкция: **[deploy/DOMAIN.md](deploy/DOMAIN.md)**
+
+Кратко: DNS A-записи → nginx → certbot → обновить `.env` → `docker-compose up -d --build`.
 
 ## Полезные команды
 
