@@ -31,6 +31,7 @@ docker compose exec backend python init_db.py
 ssh root@ВАШ_IP
 apt update && apt install -y git docker.io docker-compose-plugin
 
+mkdir -p /var/www
 cd /var/www
 git clone https://github.com/Sidikov213/Barbershop_hairlab.git hairlab
 cd hairlab
