@@ -1,0 +1,6 @@
+.master-layout {
+	min-height: 100vh;
+	background-color: #2B2B2B;
+	color: #fff;
+	font-family: var(--font-inter, "Inter", sans-serif);
+}

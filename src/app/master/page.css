@@ -1,0 +1,154 @@
+.master-sidebar__brand {
+	width: 100%;
+	margin-bottom: 2em;
+}
+
+.master-sidebar__logo {
+	font-size: 1.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	color: #fff;
+}
+
+.master-sidebar__role {
+	margin: 0.5em 0 0;
+	font-size: 0.9rem;
+	color: rgba(255, 255, 255, 0.55);
+}
+
+.master-sidebar__user {
+	margin: 0.35em 0 0;
+	font-size: 1rem;
+	color: #328A00;
+	font-weight: 600;
+}
+
+.master-sidebar__logout {
+	color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.master-sidebar__logout:hover {
+	color: #ff8a8a !important;
+}
+
+.master-loading {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	background-color: #2B2B2B;
+	color: #fff;
+}
+
+.master-loading__spinner {
+	width: 40px;
+	height: 40px;
+	border: 3px solid rgba(255, 255, 255, 0.15);
+	border-top-color: #328A00;
+	border-radius: 50%;
+	animation: master-spin 0.8s linear infinite;
+}
+
+@keyframes master-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.master-stats {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.25em;
+	margin-bottom: 2em;
+}
+
+.master-stat-card {
+	background: #fff;
+	color: #111;
+	border-radius: 0.75em;
+	padding: 1.25em 1.5em;
+	display: flex;
+	flex-direction: column;
+	gap: 0.35em;
+}
+
+.master-stat-card__value {
+	font-size: 2rem;
+	font-weight: 700;
+	color: #0F2900;
+	line-height: 1;
+}
+
+.master-stat-card__label {
+	font-size: 0.95rem;
+	color: #464646;
+}
+
+.master-bookings__status {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.35em 0.85em;
+	border-radius: 999px;
+	font-size: 0.8rem;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.master-bookings__status--confirmed {
+	background: rgba(50, 138, 0, 0.15);
+	color: #1f5f00;
+}
+
+.master-bookings__status--cancelled {
+	background: rgba(239, 68, 68, 0.12);
+	color: #b91c1c;
+}
+
+.master-bookings__status--completed {
+	background: rgba(59, 130, 246, 0.12);
+	color: #1d4ed8;
+}
+
+.master-bookings__client-name {
+	font-weight: 600;
+	color: #111;
+	margin: 0;
+}
+
+.master-bookings__client-phone {
+	margin: 0.15em 0 0;
+	font-size: 0.875rem;
+	color: #46464666;
+}
+
+.master-bookings__comment {
+	margin: 0;
+	font-size: 0.875rem;
+	color: #464646;
+	max-width: 280px;
+}
+
+.master-bookings__empty {
+	padding: 3em 1em;
+	text-align: center;
+	color: #464646;
+}
+
+@media screen and (max-width: 900px) {
+	.master-stats {
+		grid-template-columns: 1fr;
+	}
+
+	.main-container {
+		flex-direction: column;
+		height: auto;
+		min-height: 100vh;
+	}
+
+	.sidebar-container--desktop {
+		border-right: none;
+		border-bottom: 0.5px solid #222222;
+	}
+}
