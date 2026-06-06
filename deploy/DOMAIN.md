@@ -1,6 +1,6 @@
 # Привязка домена к Hair Lab (Beget VPS)
 
-Пример: **hairlab.ru** (сайт) + **api.hairlab.ru** (API).  
+Пример: **hairlabsd.ru** (сайт) + **api.hairlabsd.ru** (API).  
 VPS: `85.198.70.246`
 
 ## Шаг 1 — DNS в панели Beget
@@ -20,8 +20,8 @@ VPS: `85.198.70.246`
 Проверка (через 5–30 минут):
 
 ```bash
-ping hairlab.ru
-ping api.hairlab.ru
+ping hairlabsd.ru
+ping api.hairlabsd.ru
 ```
 
 Оба должны отвечать с IP `85.198.70.246`.
@@ -40,14 +40,14 @@ cd /var/www/hairlab
 git pull   # если конфиги ещё не на сервере — скопируйте вручную из deploy/nginx/
 ```
 
-Скопируйте конфиги (замените `hairlab.ru` на свой домен в файлах, если другой):
+Скопируйте конфиги (замените `hairlabsd.ru` на свой домен в файлах, если другой):
 
 ```bash
 cp deploy/nginx/hairlab.conf /etc/nginx/sites-available/hairlab
 cp deploy/nginx/hairlab-api.conf /etc/nginx/sites-available/hairlab-api
 
-# Замените домен, если не hairlab.ru:
-# sed -i 's/hairlab.ru/ваш-домен.ru/g' /etc/nginx/sites-available/hairlab*
+# Замените домен, если не hairlabsd.ru:
+# sed -i 's/hairlabsd.ru/ваш-домен.ru/g' /etc/nginx/sites-available/hairlab*
 ```
 
 Включите сайты:
@@ -66,8 +66,8 @@ systemctl reload nginx
 ## Шаг 3 — SSL (HTTPS)
 
 ```bash
-certbot --nginx -d hairlab.ru -d www.hairlab.ru
-certbot --nginx -d api.hairlab.ru
+certbot --nginx -d hairlabsd.ru -d www.hairlabsd.ru
+certbot --nginx -d api.hairlabsd.ru
 ```
 
 На вопросы certbot: email для уведомлений, согласие с ToS, redirect HTTP→HTTPS — **да (2)**.
@@ -89,8 +89,8 @@ nano .env
 
 ```env
 SECRET_KEY=длинный-случайный-ключ
-NEXT_PUBLIC_API_BASE_URL=https://api.hairlab.ru
-CORS_ORIGINS=https://hairlab.ru,https://www.hairlab.ru
+NEXT_PUBLIC_API_BASE_URL=https://api.hairlabsd.ru
+CORS_ORIGINS=https://hairlabsd.ru,https://www.hairlabsd.ru
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
@@ -106,9 +106,9 @@ docker-compose ps
 
 ## Шаг 5 — Проверка
 
-- https://hairlab.ru — главная
-- https://hairlab.ru/master — панель мастера (код `12345`)
-- https://api.hairlab.ru/docs — Swagger API
+- https://hairlabsd.ru — главная
+- https://hairlabsd.ru/master — панель мастера (код `12345`)
+- https://api.hairlabsd.ru/docs — Swagger API
 
 ---
 
